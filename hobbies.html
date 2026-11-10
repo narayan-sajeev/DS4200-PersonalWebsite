@@ -2,43 +2,151 @@
 <html>
 <head>
     <title>Hobbies</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel='stylesheet' href='styles.css'>
+    <script src='https://d3js.org/d3.v7.min.js'></script>
 </head>
 <body>
 
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="hobbies.html">Hobbies</a>
-    </nav>
+<nav>
+    <a href='index.html'>Home</a>
+    <a href='hobbies.html'>Hobbies</a>
+</nav>
 
-    <h2>My Hobbies and Weekly Routine</h2>
+<h2>My Hobbies and Weekly Routine</h2>
 
-    <img src="me.jpeg" alt="Hobby photo">
+<img src='me.jpeg' alt='Hobby photo'>
 
-    <p>
-        It's important to keep a balanced schedule throughout the semester to ensure you're not getting burnt out.
-        Classes and homework can take a lot of time out of your day, so sticking to a set routine helps me stay organized.
-        I try to take time out of my schedule every day to go to the gym and work out, because having that break from staring at a laptop gives me a lot more energy.
-    </p>
+<p>
+    I keep a balanced schedule throughout the semester to avoid burnout. Classes and homework can take up a lot of my
+    day, so I stick to a set routine to stay organized. I try to take time out of my schedule every day to go to
+    the gym and work out, because having that break from staring at a laptop gives me a lot more energy. Even if I am
+    extremely busy, I'll still make sure to leave my room and go on a walk to decompress and get a breath of fresh air.
+    Another thing that I found really helps me deal with intense work is spending time with others. Whenever I get
+    stressed by looming assignments and tests, I spend a few minutes talking to my friends, and that always helps me
+    feel better. I also found that watching movies helps me relax.
+</p>
 
-    <p>
-        Besides exercise, I also love taking photos of Boston as I walk around.
-        Using a dedicated camera allows you to take more refined photos compared to a standard phone camera.
-        I also enjoy playing poker with friends, which is a fun way to apply probability and statistics in a real-world situation.
-        Here are some of my favorite activities, along with a D3 chart showing roughly how many hours I spend on each.
-    </p>
+<p>
+    Besides exercise, I also love taking photos of Boston as I walk around. Using a dedicated camera allows you to take
+    more refined photos compared to a standard phone camera. I've been taking photos for several years now, and I am
+    still learning every single day. I also enjoy playing poker with friends, which is a fun way to apply probability
+    and statistics in a real-world situation.
+</p>
 
-    <h3>Activities</h3>
-    <ul>
-        <li>Gym and weightlifting</li>
-        <li>Cardio and StairMaster</li>
-        <li>Street photography</li>
-        <li>Poker</li>
-        <li>Reading</li>
-    </ul>
+<p>
+    Here are some of my favorite activities, along with a D3 chart showing roughly how many hours I spend on each:
+</p>
 
-    <h3>Weekly Hours</h3>
-    <div id="chart"></div>
+<h3>Activities</h3>
+<ul>
+    <li>Gym and weightlifting</li>
+    <li>Cardio and StairMaster</li>
+    <li>Street photography</li>
+    <li>Poker</li>
+    <li>Reading</li>
+</ul>
+
+<h3>Weekly Hours</h3>
+<div id='chart'></div>
+
+<script>
+
+    // Define margins
+    var margin = {top: 30, right: 30, bottom: 50, left: 60};
+
+    // Define width
+    var width = 460 - margin.left - margin.right;
+
+    // Define height
+    var height = 300 - margin.top - margin.bottom;
+
+    // Add SVG object to page
+    var svg = d3.select('#chart')
+        // Set as SVG
+        .append('svg')
+        // Set width
+        .attr('width', width + margin.left + margin.right)
+        // Set height
+        .attr('height', height + margin.top + margin.bottom)
+        // Group all bars as one
+        .append('g')
+        // Moves that group down so it's not in the corner
+        .attr('transform', 'translate(' + margin.left + ', ' + margin.top + ')');
+
+
+    // Define values
+    var data = [
+        {Activity: 'Gym', Value: 9},
+        {Activity: 'Cardio', Value: 4},
+        {Activity: 'Photos', Value: 5},
+        {Activity: 'Poker', Value: 4},
+        {Activity: 'Reading', Value: 3},
+    ];
+
+
+    // Define x domain
+    var x = d3.scaleBand()
+        // Set range
+        .range([0, width])
+        // Maps categories to bar positions
+        .domain(data.map(function (d) {
+            return d.Activity;
+        }))
+        // Add padding
+        .padding(0.2);
+
+    // Add new group for x-axis
+    svg.append('g')
+        // Moves to bottom
+        .attr('transform', 'translate(0, ' + height + ')')
+        // Use automatic axis generator
+        .call(d3.axisBottom(x));
+
+    // Define proportional y range
+    var y = d3.scaleLinear()
+        // Set range
+        .domain([0, 10])
+        // Set pixel range
+        .range([height, 0]);
+
+    // Add new group for y-axis
+    svg.append('g')
+        // Use automatic axis generator
+        .call(d3.axisLeft(y));
+
+    // Set bars
+    svg.selectAll('mybar')
+        // Binds data to bars
+        .data(data)
+        // Finds unmatched bars
+        .enter()
+        // Creates bar for each
+        .append('rect')
+        // Set x position for bar
+        .attr('x', function (d) {
+            return x(d.Activity);
+        })
+        // Set y position for bar
+        .attr('y', function (d) {
+            return y(d.Value);
+        })
+        // Set bar width
+        .attr('width', x.bandwidth())
+        // Set bar height
+        .attr('height', function (d) {
+            return height - y(d.Value);
+        })
+        // Set bar color
+        .attr('fill', '#2c3e50');
+
+
+</script>
+
+<h2>Contact:</h2>
+<p>Email: <a href='mailto:sajeev.n@northeastern.edu'>sajeev.n@northeastern.edu</a></p>
+<p>LinkedIn: <a href='https://www.linkedin.com/in/narayan-sajeev'>LinkedIn Profile</a></p>
+<p>GitHub: <a href='https://www.github.com/narayan-sajeev'>GitHub Profile</a></p>
+
 
 </body>
 </html>
